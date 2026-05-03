@@ -25,3 +25,17 @@ python scripts/03_run_pca.py --invariant jones --latent_dim 16
 python scripts/04_bulk_signature_decoding.py
 python scripts/05_tail_enrichment.py
 python scripts/08_make_tables_figures.py
+
+# Data
+
+The raw knot polynomial data used in this benchmark come from the public Zenodo record:
+
+- Title: dioscuri-tda/knotsBM: 0.3
+- DOI: 10.5281/zenodo.10876347
+- Source: Zenodo
+- License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+- Main files: `data.zip` and `dioscuri-tda/knotsBM-0.3.zip`
+
+The original data are publicly available and should be cited according to the Zenodo record and the associated dataset/software papers.
+
+This repository provides fixed train/validation/test splits, preprocessing scripts, and evaluation scripts for the benchmark. If processed benchmark files are included, they are derived from the public Zenodo data and preserve attribution to the original creators.
