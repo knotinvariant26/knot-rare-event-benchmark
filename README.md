@@ -13,18 +13,6 @@ This repository contains code and data assets for reproducing the bulk-versus-ta
 - Contextual outlier baselines
 - Scripts to reproduce tables and figures
 
-## Reproducing main results
-
-```bash
-conda env create -f environment.yml
-conda activate knot-benchmark
-
-python scripts/01_prepare_data.py
-python scripts/02_train_autoencoders.py --invariant jones --latent_dim 16 --seed 42
-python scripts/03_run_pca.py --invariant jones --latent_dim 16
-python scripts/04_bulk_signature_decoding.py
-python scripts/05_tail_enrichment.py
-python scripts/08_make_tables_figures.py
 
 # Data
 
@@ -39,3 +27,17 @@ The raw knot polynomial data used in this benchmark come from the public Zenodo 
 The original data are publicly available and should be cited according to the Zenodo record and the associated dataset/software papers.
 
 This repository provides fixed train/validation/test splits, preprocessing scripts, and evaluation scripts for the benchmark. If processed benchmark files are included, they are derived from the public Zenodo data and preserve attribution to the original creators.
+
+
+## Reproducing main results
+
+```bash
+conda env create -f environment.yml
+conda activate knot-benchmark
+
+python scripts/01_prepare_data.py
+python scripts/02_train_autoencoders.py --invariant jones --latent_dim 16 --seed 42
+python scripts/03_run_pca.py --invariant jones --latent_dim 16
+python scripts/04_bulk_signature_decoding.py
+python scripts/05_tail_enrichment.py
+python scripts/08_make_tables_figures.py
