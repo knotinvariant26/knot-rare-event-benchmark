@@ -1,5 +1,7 @@
 # src/evaluation/bulk_decoding.py
 
+from __future__ import annotations
+
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
@@ -12,16 +14,18 @@ def eval_multinomial_lr_split(
     y_test,
     C: float = 1.0,
     seed: int = 42,
-    max_iter: int = 1000,
+    max_iter: int = 5000,
     class_weight: str | dict | None = "balanced",
 ):
     """
-    Train a class-balanced multinomial logistic regression probe and evaluate
+    Train a class-balanced logistic regression probe and evaluate
     accuracy and macro-F1 on a held-out test set.
+
+    In recent scikit-learn versions, multinomial behavior is selected
+    automatically for multiclass problems, so we do not set multi_class.
     """
     clf = LogisticRegression(
         solver="lbfgs",
-        multi_class="multinomial",
         max_iter=max_iter,
         tol=1e-4,
         C=C,
@@ -44,13 +48,15 @@ def majority_baseline(y_train, y_test):
     """
     Majority-class baseline accuracy.
     """
+    y_train = np.asarray(y_train)
+    y_test = np.asarray(y_test)
+
     values, counts = np.unique(y_train, return_counts=True)
     majority_class = values[np.argmax(counts)]
-    acc = float((y_test == majority_class).mean())
 
     return {
         "majority_class": int(majority_class),
-        "accuracy": acc,
+        "accuracy": float((y_test == majority_class).mean()),
     }
 
 
@@ -95,12 +101,17 @@ def evaluate_raw_coefficients(
     Evaluate bulk signature accessibility from raw coefficient vectors.
     """
     results = {
-        "Alexander": eval_multinomial_lr_split(A_train, y_train, A_test, y_test, seed=seed),
-        "Jones": eval_multinomial_lr_split(J_train, y_train, J_test, y_test, seed=seed),
-        "HOMFLY": eval_multinomial_lr_split(H_train, y_train, H_test, y_test, seed=seed),
+        "Alexander": eval_multinomial_lr_split(
+            A_train, y_train, A_test, y_test, seed=seed
+        ),
+        "Jones": eval_multinomial_lr_split(
+            J_train, y_train, J_test, y_test, seed=seed
+        ),
+        "HOMFLY": eval_multinomial_lr_split(
+            H_train, y_train, H_test, y_test, seed=seed
+        ),
     }
 
-    # Remove model objects for table-friendly output if needed.
     summary = {
         name: {
             "accuracy": res["accuracy"],
@@ -111,3 +122,45 @@ def evaluate_raw_coefficients(
     }
 
     return results, summary
+
+
+def evaluate_representations(
+    representations: dict,
+    y_train,
+    y_test,
+    seed: int = 42,
+):
+    """
+    Generic helper for evaluating multiple learned or linear representations.
+
+    Parameters
+    ----------
+    representations:
+        Dictionary of the form:
+        {
+            "Jones_PCA": {"train": Z_train, "test": Z_test},
+            "Jones_AE": {"train": Z_train, "test": Z_test},
+            ...
+        }
+    """
+    rows = []
+
+    for name, Z in representations.items():
+        res = eval_multinomial_lr_split(
+            Z["train"],
+            y_train,
+            Z["test"],
+            y_test,
+            seed=seed,
+        )
+
+        rows.append(
+            {
+                "representation": name,
+                "accuracy": res["accuracy"],
+                "macro_f1": res["macro_f1"],
+                "n_iter": res["n_iter"],
+            }
+        )
+
+    return rows
