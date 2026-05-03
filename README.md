@@ -14,20 +14,16 @@ This repository contains code and data assets for reproducing the bulk-versus-ta
 - Scripts to reproduce tables and figures
 
 
-# Data
+## Data
 
-The raw knot polynomial data used in this benchmark come from the public Zenodo record:
+The raw knot polynomial data are obtained from the public Zenodo release:
 
-- Title: dioscuri-tda/knotsBM: 0.3
-- DOI: 10.5281/zenodo.10876347
-- Source: Zenodo
-- License: Creative Commons Attribution 4.0 International (CC BY 4.0)
-- Main files: `data.zip` and `dioscuri-tda/knotsBM-0.3.zip`
+Gurnari, D. and Dłotko, P. (2024). `dioscuri-tda/knotsBM: 0.3`.
+Zenodo. DOI: 10.5281/zenodo.10876347.
 
-The original data are publicly available and should be cited according to the Zenodo record and the associated dataset/software papers.
-
-This repository provides fixed train/validation/test splits, preprocessing scripts, and evaluation scripts for the benchmark. If processed benchmark files are included, they are derived from the public Zenodo data and preserve attribution to the original creators.
-
+The Zenodo release is licensed under Creative Commons Attribution 4.0 International.
+This repository provides preprocessing scripts, fixed train/validation/test splits,
+and evaluation code for the benchmark protocol described in the paper.
 
 ## Reproducing main results
 
