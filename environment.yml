@@ -1,0 +1,19 @@
+name: knot-rare-event-benchmark
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - scikit-learn
+  - scipy
+  - matplotlib
+  - joblib
+  - tqdm
+  - pyyaml
+  - pip:
+      - tensorflow>=2.16
+      - powerlaw>=1.5
