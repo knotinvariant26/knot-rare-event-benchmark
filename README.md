@@ -62,32 +62,35 @@ Jones_upto_15_MIRRORS.csv
 HomflyPt_upto_15_MIRRORS.csv
 ```
 
-Benchmark construction
+## Benchmark construction
 
 The preprocessing pipeline aligns Alexander, Jones, and HOMFLY--PT coefficient tables by:
-
+```text
 (number_of_crossings, is_alternating, table_number)
-
+```
 after removing mirror entries marked with !.
 
 The final aligned benchmark contains:
-
+```text
 307,110 aligned prime-knot records
 Alexander dimension: 17
 Jones dimension: 51
 HOMFLY--PT dimension: 152
-
+```
 For stratified train/validation/test splitting, the singleton class sigma = 14 is removed, yielding:
-
+```text
 307,109 records used for the fixed split protocol
-
+```
 The split indices are shared across all polynomial invariants.
 
-Installation
-Option 1: Conda
+## Installation
+## Option 1: Conda
+
+```text
 conda env create -f environment.yml
 conda activate knot-benchmark
-Option 2: pip
+```
+## Option 2: pip
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
