@@ -1,39 +1,45 @@
-# Knot Polynomial Spaces Benchmark
+# Knot Polynomial Spaces as a Benchmark for Rare-Event Evaluation in AI for Math
 
-This repository contains code and data assets for reproducing the bulk-versus-tail evaluation protocol for rare-event evaluation in knot polynomial coefficient spaces.
+This repository contains code and reproducibility assets for the paper:
 
-## Contents
+**Knot Polynomial Spaces as a Benchmark for Rare-Event Evaluation in AI for Math**
 
-- Fixed train/validation/test splits
-- Preprocessing scripts for Alexander, Jones, and HOMFLY--PT coefficient vectors
-- PCA and autoencoder reconstruction baselines
-- Bulk signature decoding scripts
-- Rare-event tail enrichment evaluation
-- Confounder controls
-- Contextual outlier baselines
-- Scripts to reproduce tables and figures
+The benchmark studies rare-event evaluation in polynomial coefficient spaces for prime knots. We use coefficient-vector encodings of the Alexander, Jones, and HOMFLY--PT polynomials and evaluate unsupervised reconstruction-based scores against the knot signature, which is held out as an external probe.
 
+The goal is not to introduce a new representation learning architecture. Instead, the repository provides a reproducible benchmark protocol for separating:
 
-## Data
+1. **Bulk accessibility**: how much signature information is accessible from raw coefficients, PCA embeddings, or autoencoder latents.
+2. **Tail enrichment**: whether reconstruction residuals enrich for rare large-signature knots in fixed-mass top-k tails.
 
-The raw knot polynomial data are obtained from the public Zenodo release:
+---
 
-Gurnari, D. and Dłotko, P. (2024). `dioscuri-tda/knotsBM: 0.3`.
-Zenodo. DOI: 10.5281/zenodo.10876347.
+## Repository structure
 
-The Zenodo release is licensed under Creative Commons Attribution 4.0 International.
-This repository provides preprocessing scripts, fixed train/validation/test splits,
-and evaluation code for the benchmark protocol described in the paper.
-
-## Reproducing main results
-
-```bash
-conda env create -f environment.yml
-conda activate knot-benchmark
-
-python scripts/01_prepare_data.py
-python scripts/02_train_autoencoders.py --invariant jones --latent_dim 16 --seed 42
-python scripts/03_run_pca.py --invariant jones --latent_dim 16
-python scripts/04_bulk_signature_decoding.py
-python scripts/05_tail_enrichment.py
-python scripts/08_make_tables_figures.py
+```text
+knot-rare-event-benchmark/
+├── README.md
+├── requirements.txt
+├── environment.yml
+├── scripts/
+│   ├── 01_prepare_data.py
+│   ├── 02_train_reconstruction_models.py
+│   ├── 04_bulk_signature_decoding.py
+│   ├── 05_tail_enrichment.py
+│   ├── 06_make_paper_tables.py
+│   ├── 07_jones_ae_ablation.py
+│   ├── 08_distribution_diagnostics.py
+│   ├── 09_confounder_analysis.py
+│   ├── 10_tail_overlap_jones.py
+│   ├── 11_make_tail_scatter.py
+│   └── 12_outlier_baselines.py
+├── src/
+│   ├── data/
+│   ├── evaluation/
+│   ├── features/
+│   ├── models/
+│   └── plotting/
+└── results/
+    ├── tables/
+    ├── figures/
+    ├── scores/
+    └── splits/
