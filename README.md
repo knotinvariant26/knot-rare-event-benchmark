@@ -354,6 +354,14 @@ Creative Commons Attribution 4.0 International
 ```
 Please cite the original dataset release when using the raw or processed knot polynomial data.
 
+## Croissant metadata
+
+This benchmark includes a Croissant metadata file:
+
+```text
+croissant_metadata.json
+```
+
 ### Citation
 
 Anonymous citation placeholder for review:
