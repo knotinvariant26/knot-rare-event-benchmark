@@ -287,6 +287,7 @@ Representación,Jones Acc.,Jones Macro-F1,Alexander Acc.,Alexander Macro-F1,HOMF
 Raw coefficients,0.873,0.721,0.838,0.722,0.960,0.913
 "PCA, d=16",0.856,0.678,0.838,0.723,0.399,0.503
 "AE latent, d=16",0.866,0.692,0.706,0.649,0.604,0.629
+
 ### Jones rare-event tail enrichment for Y10
 Score	Enr.@0.95	Enr.@0.99	Recall@0.99	Captured@0.99
 PCA-NRE	3.49x	9.50x	9.5%	6/308
@@ -294,16 +295,17 @@ AE-NRE	4.13x	7.91x	7.9%	5/308
 
 Small numerical differences may occur across software versions, but the fixed split and stored score files should reproduce the reported tables.
 
-Compute requirements
+## Compute requirements
 
 The benchmark is designed to be reproducible on a standard research workstation or cloud notebook.
 
-Recommended hardware
-CPU: 4+ cores recommended.
-RAM: 16 GB minimum; 32 GB recommended for the full HOMFLY--PT and outlier-baseline experiments.
-GPU: optional but recommended for autoencoder training. A single NVIDIA T4, A10, V100, or similar GPU is sufficient.
-Storage: approximately 2--5 GB for raw CSV files, processed arrays, intermediate scores, and result tables.
-Approximate runtimes
+### Recommended hardware
+- CPU: 4+ cores recommended.
+- RAM: 16 GB minimum; 32 GB recommended for the full HOMFLY--PT and outlier-baseline experiments.
+- GPU: optional but recommended for autoencoder training. A single NVIDIA T4, A10, V100, or similar GPU is sufficient.
+- Storage: approximately 2--5 GB for raw CSV files, processed arrays, intermediate scores, and result tables.
+
+### Approximate runtimes
 
 Runtimes vary by hardware.
 
@@ -322,35 +324,36 @@ Ambient outlier baselines	scripts/12_outlier_baselines.py	tens of minutes to sev
 
 The main benchmark results in Tables 1--2 can be reproduced without running the contextual outlier baselines.
 
-Reproducibility notes
-All standardization is fit on the training split only.
-Signature labels are never used to train PCA, autoencoders, reconstruction scores, or tail membership.
-The same train/validation/test split indices are used across Alexander, Jones, and HOMFLY--PT.
-Tail metrics use exact fixed-mass top-k tails, not threshold-based quantile inclusion.
-The extreme target Y12 is reported only as a qualitative stress test because it has only two positives in the held-out test split.
-License
+## Reproducibility notes
+- All standardization is fit on the training split only.
+- Signature labels are never used to train PCA, autoencoders, reconstruction scores, or tail membership.
+- The same train/validation/test split indices are used across Alexander, Jones, and HOMFLY--PT.
+- Tail metrics use exact fixed-mass top-k tails, not threshold-based quantile inclusion.
+- The extreme target Y12 is reported only as a qualitative stress test because it has only two positives in the held-out test split.
+
+## License
 
 The code in this repository is released under the license specified in LICENSE.
 
 The raw knot polynomial data are obtained from the public knotsBM Zenodo release and are governed by the original dataset license:
-
+```text
 Creative Commons Attribution 4.0 International
-
+```
 Please cite the original dataset release when using the raw or processed knot polynomial data.
 
-Citation
+### Citation
 
 Anonymous citation placeholder for review:
-
+```bibtex
 @misc{knot_rare_event_benchmark_2026,
   title = {Knot Polynomial Spaces as a Benchmark for Rare-Event Evaluation in AI for Math},
   author = {Anonymous},
   year = {2026},
   note = {Submitted for review}
 }
-
+```
 Dataset citation:
-
+```bibtex
 @dataset{gurnari_dlotko_2024_knotsbm,
   author = {Gurnari, Davide and D{\l}otko, Pawe{\l}},
   title = {dioscuri-tda/knotsBM: 0.3},
@@ -358,7 +361,9 @@ Dataset citation:
   publisher = {Zenodo},
   doi = {10.5281/zenodo.10876347}
 }
-Anonymity note
+```
+
+## Anonymity note
 
 This repository is prepared for anonymous peer review. It avoids author-identifying information and uses neutral project naming.
 
