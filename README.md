@@ -283,15 +283,19 @@ tau = 0.99 -> tail size = 308
 Approximate values from the paper:
 
 ### Bulk signature accessibility
-Representación,Jones Acc.,Jones Macro-F1,Alexander Acc.,Alexander Macro-F1,HOMFLY-PT Acc.,HOMFLY-PT Macro-F1
-Raw coefficients,0.873,0.721,0.838,0.722,0.960,0.913
-"PCA, d=16",0.856,0.678,0.838,0.723,0.399,0.503
-"AE latent, d=16",0.866,0.692,0.706,0.649,0.604,0.629
+
+| Representation | Jones Acc. | Jones Macro-F1 | Alexander Acc. | Alexander Macro-F1 | HOMFLY--PT Acc. | HOMFLY--PT Macro-F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| Raw coefficients | 0.873 | 0.721 | 0.838 | 0.722 | 0.960 | 0.913 |
+| PCA, d=16 | 0.856 | 0.678 | 0.838 | 0.723 | 0.399 | 0.503 |
+| AE latent, d=16 | 0.866 | 0.692 | 0.706 | 0.649 | 0.604 | 0.629 |
 
 ### Jones rare-event tail enrichment for Y10
-Score	Enr.@0.95	Enr.@0.99	Recall@0.99	Captured@0.99
-PCA-NRE	3.49x	9.50x	9.5%	6/308
-AE-NRE	4.13x	7.91x	7.9%	5/308
+
+| Score | Enr.@0.95 | Enr.@0.99 | Recall@0.99 | Captured@0.99 |
+|---|---:|---:|---:|---:|
+| PCA-NRE | 3.49x | 9.50x | 9.5% | 6/308 |
+| AE-NRE | 4.13x | 7.91x | 7.9% | 5/308 |
 
 Small numerical differences may occur across software versions, but the fixed split and stored score files should reproduce the reported tables.
 
@@ -309,18 +313,19 @@ The benchmark is designed to be reproducible on a standard research workstation 
 
 Runtimes vary by hardware.
 
-Step	Script	Approx. runtime	GPU needed?
-Data preparation and alignment	scripts/01_prepare_data.py	minutes	No
-Reconstruction models	scripts/02_train_reconstruction_models.py	tens of minutes to a few hours	Recommended
-Bulk signature decoding	scripts/04_bulk_signature_decoding.py	minutes	No
-Tail enrichment tables	scripts/05_tail_enrichment.py	minutes	No
-Paper table generation	scripts/06_make_paper_tables.py	minutes	No
-Jones AE ablation	scripts/07_jones_ae_ablation.py	several hours depending on GPU	Recommended
-Distribution diagnostics	scripts/08_distribution_diagnostics.py	minutes to tens of minutes	No
-Confounder analysis	scripts/09_confounder_analysis.py	minutes	No
-Tail-overlap analysis	scripts/10_tail_overlap_jones.py	minutes	No
-Tail scatter figure	scripts/11_make_tail_scatter.py	minutes	No
-Ambient outlier baselines	scripts/12_outlier_baselines.py	tens of minutes to several hours	No, but CPU/RAM intensive
+| Step | Script | Approx. runtime | GPU needed? |
+|---|---|---:|---:|
+| Data preparation and alignment | `scripts/01_prepare_data.py` | minutes | No |
+| Reconstruction models | `scripts/02_train_reconstruction_models.py` | tens of minutes to a few hours | Recommended |
+| Bulk signature decoding | `scripts/04_bulk_signature_decoding.py` | minutes | No |
+| Tail enrichment tables | `scripts/05_tail_enrichment.py` | minutes | No |
+| Paper table generation | `scripts/06_make_paper_tables.py` | minutes | No |
+| Jones AE ablation | `scripts/07_jones_ae_ablation.py` | several hours depending on GPU | Recommended |
+| Distribution diagnostics | `scripts/08_distribution_diagnostics.py` | minutes to tens of minutes | No |
+| Confounder analysis | `scripts/09_confounder_analysis.py` | minutes | No |
+| Tail-overlap analysis | `scripts/10_tail_overlap_jones.py` | minutes | No |
+| Tail scatter figure | `scripts/11_make_tail_scatter.py` | minutes | No |
+| Ambient outlier baselines | `scripts/12_outlier_baselines.py` | tens of minutes to several hours | No, but CPU/RAM intensive |
 
 The main benchmark results in Tables 1--2 can be reproduced without running the contextual outlier baselines.
 
