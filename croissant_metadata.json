@@ -5,14 +5,14 @@
     "cr": "http://mlcommons.org/croissant/"
   },
   "@type": "Dataset",
-  "name": "Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math",
+  "name": "Knot Polynomial Spaces Rare Event Benchmark for AI for Math",
   "alternateName": "Knot Polynomial Spaces Rare-Event Benchmark",
   "description": "A reproducible benchmark for rare-event evaluation in AI for Math using aligned coefficient encodings of the Alexander, Jones, and HOMFLY--PT polynomials for prime knots. The benchmark evaluates bulk accessibility and fixed-mass tail enrichment using the knot signature as a held-out external evaluation probe. The repository provides preprocessing, alignment, split generation, model training, scoring, and evaluation scripts. Processed benchmark arrays and result artifacts are not redistributed in the repository; they can be regenerated from the public raw knotsBM Zenodo release.",
   "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark",
   "license": [
-  "https://opensource.org/licenses/MIT",
-  "https://creativecommons.org/licenses/by/4.0/"
-],
+    "https://opensource.org/licenses/MIT",
+    "https://creativecommons.org/licenses/by/4.0/"
+  ],
   "creator": {
     "@type": "Organization",
     "name": "Anonymous authors"
@@ -40,18 +40,15 @@
   ],
   "isBasedOn": {
     "@type": "Dataset",
-    "name": "dioscuri-tda/knotsBM: 0.3",
+    "name": "dioscuri-tda knotsBM 0.3",
     "identifier": "https://doi.org/10.5281/zenodo.10876347",
     "url": "https://zenodo.org/records/10876347",
     "license": "https://creativecommons.org/licenses/by/4.0/"
   },
-  "citation": [
-    "Anonymous authors. Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math. Submitted for review, 2026.",
-    "Gurnari, Davide and Dłotko, Paweł. dioscuri-tda/knotsBM: 0.3. Zenodo, 2024. DOI: 10.5281/zenodo.10876347."
-  ],
+  "cite_as": "Anonymous authors. Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math. Submitted for review, 2026. Source dataset: Gurnari, Davide and Dlotko, Pawel. dioscuri-tda/knotsBM: 0.3. Zenodo, 2024. DOI: 10.5281/zenodo.10876347.",
   "distribution": [
     {
-      "@type": "DataDownload",
+      "@type": "FileSet",
       "name": "Raw knotsBM data",
       "description": "Public raw knot polynomial coefficient data used as the source for benchmark construction.",
       "contentUrl": "https://zenodo.org/records/10876347",
@@ -59,11 +56,11 @@
       "license": "https://creativecommons.org/licenses/by/4.0/"
     },
     {
-      "@type": "SoftwareSourceCode",
+      "@type": "FileSet",
       "name": "Benchmark code repository",
       "description": "Code for preprocessing, alignment, split generation, reconstruction model training, scoring, and evaluation.",
-      "codeRepository": "https://github.com/knotinvariant26/knot-rare-event-benchmark",
-      "programmingLanguage": "Python",
+      "contentUrl": "https://github.com/knotinvariant26/knot-rare-event-benchmark",
+      "encodingFormat": "application/x-python-code",
       "license": "https://opensource.org/licenses/MIT"
     }
   ],
@@ -131,10 +128,10 @@
       "description": "Fixed-dimensional coefficient vector encoding of the Jones polynomial. Dimension: 51."
     },
     {
-  "@type": "PropertyValue",
-  "name": "homfly_pt_coefficients",
-  "description": "Fixed-dimensional coefficient vector encoding of the HOMFLY--PT polynomial. Dimension: 152."
-    } ,
+      "@type": "PropertyValue",
+      "name": "homfly_pt_coefficients",
+      "description": "Fixed-dimensional coefficient vector encoding of the HOMFLY--PT polynomial. Dimension: 152."
+    },
     {
       "@type": "PropertyValue",
       "name": "split",
