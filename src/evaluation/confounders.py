@@ -121,17 +121,43 @@ def safe_auprc(y_true, scores):
         return np.nan
     return float(average_precision_score(y_true, scores))
 
+def topk_tail_mask(scores, tau: float):
+    """
+    Exact fixed-mass top-k tail.
+
+    Selects exactly ceil((1 - tau) * n) samples with the largest scores.
+    Ties are broken deterministically by stable sorting.
+    """
+    scores = np.asarray(scores, dtype=np.float64).ravel()
+    n = int(len(scores))
+    k = int(np.ceil((1.0 - tau) * n))
+
+    if k <= 0:
+        raise ValueError(f"tau={tau} gives k={k}.")
+    if k > n:
+        raise ValueError(f"tau={tau} gives k={k} > n={n}.")
+
+    order = np.argsort(-scores, kind="mergesort")
+    mask = np.zeros(n, dtype=bool)
+    mask[order[:k]] = True
+    return mask
 
 def enrichment_at_tau_with_counts(scores, y_true, tau: float):
     """
-    Quantile-based tail enrichment. Uses scores >= empirical tau quantile.
+    Exact fixed-mass top-k tail enrichment.
+
+    Uses exactly ceil((1 - tau) * n) samples with the largest scores.
     """
-    scores = np.asarray(scores).ravel()
-    y_true = np.asarray(y_true).astype(int)
+    scores = np.asarray(scores, dtype=np.float64).ravel()
+    y_true = np.asarray(y_true).astype(int).ravel()
+
+    if len(scores) != len(y_true):
+        raise ValueError(
+            f"Length mismatch: len(scores)={len(scores)}, len(y_true)={len(y_true)}"
+        )
 
     n = int(len(y_true))
-    q = np.quantile(scores, tau)
-    tail = scores >= q
+    tail = topk_tail_mask(scores, tau)
     tail_size = int(tail.sum())
 
     base_rate = float(y_true.mean()) if n > 0 else np.nan
@@ -305,9 +331,7 @@ def evaluate_confounder_models_jones(
 
 
 def tail_mask(scores, tau: float):
-    scores = np.asarray(scores).ravel()
-    q = np.quantile(scores, tau)
-    return scores >= q
+    return topk_tail_mask(scores, tau)
 
 
 def overlap_stats(mask_a, mask_b):
@@ -436,7 +460,7 @@ def tail_enrichment_by_bin_stable(
     df = df.copy()
     threshold = df[nre_col].quantile(tau)
 
-    df["is_tail"] = df[nre_col] >= threshold
+    df["is_tail"] = topk_tail_mask(df[nre_col].to_numpy(), tau)
     df["is_high_sig"] = (np.abs(df[sig_col].to_numpy()) >= sig_threshold)
 
     df["support_bin"] = pd.qcut(df[support_col], n_bins, duplicates="drop")
