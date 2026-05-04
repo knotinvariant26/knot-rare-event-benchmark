@@ -71,14 +71,14 @@ The preprocessing pipeline aligns Alexander, Jones, and HOMFLY--PT coefficient t
 after removing mirror entries marked with !.
 
 The final aligned benchmark contains:
-```text
+
 307,110 aligned prime-knot records
 Alexander dimension: 17
 Jones dimension: 51
 HOMFLY--PT dimension: 152
 ```
 For stratified train/validation/test splitting, the singleton class sigma = 14 is removed, yielding:
-```text
+
 307,109 records used for the fixed split protocol
 ```
 The split indices are shared across all polynomial invariants.
@@ -86,179 +86,208 @@ The split indices are shared across all polynomial invariants.
 ## Installation
 ## Option 1: Conda
 
-```text
+```bash
 conda env create -f environment.yml
 conda activate knot-benchmark
 ```
 ## Option 2: pip
+
+```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+```
 
 Tested with Python 3.10+.
 
-Reproducing the main results
+## Reproducing the main results
 
 The main paper results are generated in stages.
 
-1. Prepare aligned data and fixed splits
+### 1. Prepare aligned data and fixed splits
+
+```bash
 python scripts/01_prepare_data.py
+```
 
 Expected outputs:
 
+```text
 results/splits/
 results/tables/preprocessing_summary.csv
+```
 
 This step performs alignment, mirror filtering, signature consistency checks, train/validation/test split generation, and train-only standardization metadata.
 
-2. Train reconstruction models and compute scores
+## 2. Train reconstruction models and compute scores
+```bash
 python scripts/02_train_reconstruction_models.py
+```
 
 Expected outputs:
-
+```text
 results/scores/
 results/models/
+```
 
 This step trains PCA and autoencoder reconstruction models for Alexander, Jones, and HOMFLY--PT. Autoencoders are trained without signature labels.
 
-3. Bulk signature decoding
+## 3. Bulk signature decoding
+```bash
 python scripts/04_bulk_signature_decoding.py
+```
 
 Expected outputs:
 
+```text
 results/tables/bulk_signature_decoding.csv
+```
 
 This reproduces the bulk accessibility results reported in Table 1 of the paper. The probe is a class-balanced multinomial logistic regression trained on raw coefficients, PCA embeddings, and autoencoder latents.
 
 The knot signature is used only for this post hoc probe and is not used to train PCA or autoencoders.
 
-4. Rare-event tail enrichment
+## 4. Rare-event tail enrichment
+```bash
 python scripts/05_tail_enrichment.py
+```
 
 Expected outputs:
-
+```text
 results/tables/tail_enrichment_main.csv
 results/tables/jones_Y12_stress.csv
-
+```
 This reproduces the fixed-mass top-k rare-event enrichment results.
 
-For a test set of size n and tail level tau, the tail size is:
-
+For a test set of size ```text n ``` and tail level ```text tau ```, the tail size is:
+```text
 k = ceil((1 - tau) * n)
-
+```
 For the held-out test set used in the paper:
-
+```text
 tau = 0.95 -> k = 1536
 tau = 0.99 -> k = 308
-
+```
 Rare-event targets are:
-
+```text
 Y8  = 1[|sigma(K)| >= 8]
 Y10 = 1[|sigma(K)| >= 10]
 Y12 = 1[|sigma(K)| >= 12]  # qualitative stress test only
-5. Generate paper tables
+```
+
+## 5. Generate paper tables
+```bash
 python scripts/06_make_paper_tables.py
-
+```
 Expected outputs:
-
+```text
 results/tables/table1_bulk_decoding.tex
 results/tables/table2_jones_tail_enrichment.tex
 results/tables/table_y12_stress.tex
-Additional analyses
+```
+## Additional analyses
 
 The following scripts reproduce appendix diagnostics and contextual comparisons.
 
-Jones autoencoder ablations
+### Jones autoencoder ablations
+```bash
 python scripts/07_jones_ae_ablation.py
-
+```
 Outputs:
-
+```text
 results/tables/jones_ae_ablation_stability.csv
-
+```
 This varies latent dimension, random seed, and score type:
-
+```text
 latent dimension: 8, 16, 32
 random seeds: 42, 123, 999
 score type: NRE, SSE
 Distributional diagnostics
 python scripts/08_distribution_diagnostics.py
-
+```
 Outputs:
-
+```text
 results/tables/powerlaw_master_results.csv
 results/figures/ccdf_all_invariants.png
 results/figures/ccdf_all_invariants.pdf
-
+```
 These diagnostics are descriptive only. The paper does not claim exact power-law behavior.
 
-Confounder analysis
+### Confounder analysis
+```bash
 python scripts/09_confounder_analysis.py
-
+```
 Outputs:
-
+```text
 results/tables/confounder_spearman.csv
 results/tables/confounder_models_jones.csv
+```
 
 This evaluates whether coefficient-level statistics such as norm, sparsity proxy, support width, and crossing number explain rare-event enrichment.
 
-Tail-overlap analysis
+### Tail-overlap analysis
+```bash
 python scripts/10_tail_overlap_jones.py
-
+```
 Outputs:
-
+```text
 results/tables/tail_overlap_jones.csv
 results/tables/ae_only_positive_examples.csv
-
+```
 This compares the fixed-mass AE reconstruction tail with the tail induced by a supervised confounder-only model.
 
-Tail scatter figure
+### Tail scatter figure
+```bash
 python scripts/11_make_tail_scatter.py
-
+```
 Outputs:
-
+```text
 results/figures/jones_tail_scatter_full.png
 results/figures/jones_tail_scatter_full.pdf
 results/figures/jones_tail_scatter_tail_zoom.png
 results/figures/jones_tail_scatter_tail_zoom.pdf
-
+```
 This generates the main scatter visualization for Jones AE-NRE against |sigma(K)|, colored by PCA-NRE.
 
-Contextual ambient outlier baselines
+### Contextual ambient outlier baselines
+```bash
 python scripts/12_outlier_baselines.py
-
+```
 Outputs:
-
+```text
 results/tables/outlier_baselines_test.csv
 results/tables/outlier_baselines_test_table.tex
-
+```
 These baselines include Isolation Forest, Local Outlier Factor, One-Class SVM with RBF kernel, and RFF + PCA residual. They are included as contextual comparisons only and are not used as the main basis for the reconstruction-based claims.
 
-Fixed-mass top-k tail convention
+### Fixed-mass top-k tail convention
 
 All enrichment and captured-count results use exact fixed-mass top-k tails.
 
 Given scores s, test-set size n, and tail level tau:
-
+```python
 k = ceil((1 - tau) * n)
 tail = top k samples ranked by score
+```
 
 Ties are broken deterministically by stable sorting. This ensures that all methods are compared using identical tail sizes.
 
 For the paper test split:
-
+```text
 N_test = 30,711
 tau = 0.95 -> tail size = 1,536
 tau = 0.99 -> tail size = 308
-Main expected results
+```
+### Main expected results
 
 Approximate values from the paper:
 
-Bulk signature accessibility
-Representation	Jones Acc.	Jones Macro-F1	Alexander Acc.	Alexander Macro-F1	HOMFLY--PT Acc.	HOMFLY--PT Macro-F1
-Raw coefficients	0.873	0.721	0.838	0.722	0.960	0.913
-PCA, d=16	0.856	0.678	0.838	0.723	0.399	0.503
-AE latent, d=16	0.866	0.692	0.706	0.649	0.604	0.629
-Jones rare-event tail enrichment for Y10
+### Bulk signature accessibility
+Representación,Jones Acc.,Jones Macro-F1,Alexander Acc.,Alexander Macro-F1,HOMFLY-PT Acc.,HOMFLY-PT Macro-F1
+Raw coefficients,0.873,0.721,0.838,0.722,0.960,0.913
+"PCA, d=16",0.856,0.678,0.838,0.723,0.399,0.503
+"AE latent, d=16",0.866,0.692,0.706,0.649,0.604,0.629
+### Jones rare-event tail enrichment for Y10
 Score	Enr.@0.95	Enr.@0.99	Recall@0.99	Captured@0.99
 PCA-NRE	3.49x	9.50x	9.5%	6/308
 AE-NRE	4.13x	7.91x	7.9%	5/308
