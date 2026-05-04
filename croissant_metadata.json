@@ -1,0 +1,203 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/"
+  },
+  "@type": "Dataset",
+  "name": "Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math",
+  "alternateName": "Knot Polynomial Spaces Rare-Event Benchmark",
+  "description": "A reproducible benchmark for rare-event evaluation in AI for Math using aligned coefficient encodings of the Alexander, Jones, and HOMFLY--PT polynomials for prime knots. The benchmark evaluates bulk accessibility and fixed-mass tail enrichment using the knot signature as a held-out external evaluation probe. The repository provides preprocessing, alignment, split generation, model training, scoring, and evaluation scripts. Processed benchmark arrays and result artifacts are not redistributed in the repository; they can be regenerated from the public raw knotsBM Zenodo release.",
+  "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {
+    "@type": "Organization",
+    "name": "Anonymous authors"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Anonymous"
+  },
+  "datePublished": "2026",
+  "version": "1.0",
+  "keywords": [
+    "AI for Math",
+    "rare-event evaluation",
+    "fixed-mass tail evaluation",
+    "benchmark",
+    "knot theory",
+    "polynomial invariants",
+    "Alexander polynomial",
+    "Jones polynomial",
+    "HOMFLY--PT polynomial",
+    "unsupervised representation learning",
+    "reconstruction error",
+    "bulk accessibility",
+    "tail enrichment"
+  ],
+  "isBasedOn": {
+    "@type": "Dataset",
+    "name": "dioscuri-tda/knotsBM: 0.3",
+    "identifier": "https://doi.org/10.5281/zenodo.10876347",
+    "url": "https://zenodo.org/records/10876347",
+    "license": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "citation": [
+    "Anonymous authors. Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math. Submitted for review, 2026.",
+    "Gurnari, Davide and Dłotko, Paweł. dioscuri-tda/knotsBM: 0.3. Zenodo, 2024. DOI: 10.5281/zenodo.10876347."
+  ],
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "name": "Raw knotsBM data",
+      "description": "Public raw knot polynomial coefficient data used as the source for benchmark construction.",
+      "contentUrl": "https://zenodo.org/records/10876347",
+      "encodingFormat": "text/csv",
+      "license": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Benchmark code repository",
+      "description": "Code for preprocessing, alignment, split generation, reconstruction model training, scoring, and evaluation.",
+      "codeRepository": "https://github.com/knotinvariant26/knot-rare-event-benchmark",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT"
+    }
+  ],
+  "hasPart": [
+    {
+      "@type": "CreativeWork",
+      "name": "Data preparation and alignment script",
+      "description": "Script that aligns Alexander, Jones, and HOMFLY--PT coefficient tables, removes mirror entries, checks signature consistency, creates fixed splits, and stores train-only standardization metadata.",
+      "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/01_prepare_data.py"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Reconstruction model training script",
+      "description": "Script that trains PCA and autoencoder reconstruction models for Alexander, Jones, and HOMFLY--PT coefficient spaces without using signature labels.",
+      "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/02_train_reconstruction_models.py"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Bulk signature decoding script",
+      "description": "Script that evaluates bulk accessibility of knot signature from raw coefficients, PCA embeddings, and autoencoder latents using a post hoc multinomial logistic regression probe.",
+      "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/04_bulk_signature_decoding.py"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Rare-event tail enrichment script",
+      "description": "Script that evaluates fixed-mass top-k tail enrichment, tail recall, and captured counts for rare large-signature targets.",
+      "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/05_tail_enrichment.py"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Paper table generation script",
+      "description": "Script that generates paper tables from benchmark outputs.",
+      "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/06_make_paper_tables.py"
+    }
+  ],
+  "variableMeasured": [
+    {
+      "@type": "PropertyValue",
+      "name": "number_of_crossings",
+      "description": "Crossing number of the knot, used for alignment metadata, controls, and out-of-distribution diagnostics."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "is_alternating",
+      "description": "Indicator of whether the knot is alternating, used for alignment metadata."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "table_number",
+      "description": "Table identifier used to align records across polynomial coefficient files."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "sigma",
+      "description": "Knot signature. This variable is held out from unsupervised training and used only as an external evaluation probe."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "alexander_coefficients",
+      "description": "Fixed-dimensional coefficient vector encoding of the Alexander polynomial. Dimension: 17."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "jones_coefficients",
+      "description": "Fixed-dimensional coefficient vector encoding of the Jones polynomial. Dimension: 51."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "homflypt_coefficients",
+      "description": "Fixed-dimensional coefficient vector encoding of the HOMFLY--PT polynomial. Dimension: 152."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "split",
+      "description": "Train, validation, or test assignment generated by the fixed benchmark split protocol."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Y8",
+      "description": "Rare-event target defined as 1[|sigma(K)| >= 8]."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Y10",
+      "description": "Rare-event target defined as 1[|sigma(K)| >= 10]."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Y12",
+      "description": "Extreme rare-event target defined as 1[|sigma(K)| >= 12]. Used only as a qualitative stress test."
+    }
+  ],
+  "measurementTechnique": [
+    "Coefficient table alignment by number_of_crossings, is_alternating, and table_number",
+    "Mirror filtering for entries marked with !",
+    "Signature consistency filtering across polynomial files",
+    "Train-only coordinate standardization",
+    "Shared train, validation, and test split indices across polynomial invariants",
+    "Unsupervised PCA and autoencoder reconstruction",
+    "Post hoc bulk signature probing",
+    "Fixed-mass top-k tail enrichment",
+    "Rare-event tail recall and captured-count evaluation",
+    "Confounder controls using coefficient norm, support width, sparsity proxy, and crossing number",
+    "Out-of-distribution evaluation by crossing number"
+  ],
+  "encodingFormat": [
+    "text/csv",
+    "application/x-npy",
+    "application/x-npz",
+    "application/json",
+    "text/plain"
+  ],
+  "conditionsOfAccess": "The raw data are public and available through the knotsBM Zenodo release. The repository does not redistribute processed benchmark arrays or result artifacts by default. Processed arrays, splits, scores, tables, and figures can be regenerated from the public raw data using the provided scripts.",
+  "intendedUse": "This benchmark is intended for evaluating unsupervised representation learning methods and reconstruction-based scoring rules under a bulk-versus-tail protocol. It supports evaluation of bulk signature accessibility, fixed-mass rare-event tail enrichment, representation-dependent compressibility failure, and sensitivity to alternative evaluation choices.",
+  "limitations": "Polynomial invariants are not complete knot invariants. Rare large-signature events are extremely imbalanced. The benchmark is bounded by the available crossing number range in the underlying public dataset. Tail membership is representation- and score-dependent and should not be interpreted as an intrinsic topological anomaly label.",
+  "ethicalConsiderations": "The benchmark consists of mathematical objects and does not contain human subjects, personal data, demographic attributes, behavioral data, or deployed decision-making outcomes. No direct negative societal impacts are anticipated.",
+  "responsibleAI": {
+    "dataType": "Mathematical data",
+    "containsPersonalData": false,
+    "containsHumanSubjectsData": false,
+    "containsSensitiveAttributes": false,
+    "intendedUsers": [
+      "Machine learning researchers",
+      "AI for Math researchers",
+      "Benchmark and evaluation researchers",
+      "Computational topology researchers"
+    ],
+    "outOfScopeUses": [
+      "Treating reconstruction tails as intrinsic topological anomaly labels",
+      "Using the benchmark to claim universal detector optimality",
+      "Using Y12 as a statistically stable quantitative target"
+    ],
+    "knownLimitations": [
+      "Polynomial coefficient vectors are incomplete representations of knots",
+      "Rare-event targets are highly imbalanced",
+      "Crossing number range is bounded by the source dataset",
+      "Processed assets must be regenerated from the public source data unless separately distributed"
+    ]
+  }
+}
