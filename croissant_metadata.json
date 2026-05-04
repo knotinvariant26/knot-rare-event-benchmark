@@ -4,25 +4,26 @@
     "@vocab": "https://schema.org/",
     "cr": "http://mlcommons.org/croissant/",
     "rai": "http://mlcommons.org/croissant/RAI/",
-    "dct": "http://purl.org/dc/terms/"
+    "prov": "http://www.w3.org/ns/prov#",
+    "sc": "https://schema.org/",
+    "includes": "http://mlcommons.org/schema/includes"
   },
   "@type": "Dataset",
-  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
-  "name": "Knot Polynomial Spaces Rare Event Benchmark for AI for Math",
-  "alternateName": "Knot Polynomial Spaces Rare-Event Benchmark",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "knot_polynomial_spaces_rare_event_benchmark",
+  "alternateName": "Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math",
   "description": "A reproducible benchmark for rare-event evaluation in AI for Math using aligned coefficient encodings of the Alexander, Jones, and HOMFLY--PT polynomials for prime knots. The benchmark evaluates bulk accessibility and fixed-mass tail enrichment using the knot signature as a held-out external evaluation probe. The repository provides preprocessing, alignment, split generation, model training, scoring, and evaluation scripts. Processed benchmark arrays and result artifacts are not redistributed in the repository; they can be regenerated from the public raw knotsBM Zenodo release.",
   "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark",
-  "license": [
-    "https://opensource.org/licenses/MIT",
-    "https://creativecommons.org/licenses/by/4.0/"
-  ],
+  "license": "https://opensource.org/licenses/MIT",
+  "citation": "Anonymous authors. Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math. Submitted for review, 2026. Source dataset: Gurnari, Davide and Dlotko, Pawel. dioscuri-tda/knotsBM: 0.3. Zenodo, 2024. DOI: 10.5281/zenodo.10876347.",
+  "cite_as": "Anonymous authors. Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math. Submitted for review, 2026. Source dataset: Gurnari, Davide and Dlotko, Pawel. dioscuri-tda/knotsBM: 0.3. Zenodo, 2024. DOI: 10.5281/zenodo.10876347.",
   "creator": {
     "@type": "Organization",
-    "name": "Anonymous authors"
+    "name": "anonymous_authors"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Anonymous"
+    "name": "anonymous"
   },
   "datePublished": "2026",
   "version": "1.0",
@@ -43,58 +44,73 @@
   ],
   "isBasedOn": {
     "@type": "Dataset",
-    "name": "dioscuri-tda knotsBM 0.3",
+    "name": "dioscuri_tda_knotsbm_0_3",
     "identifier": "https://doi.org/10.5281/zenodo.10876347",
     "url": "https://zenodo.org/records/10876347",
     "license": "https://creativecommons.org/licenses/by/4.0/"
   },
-  "cite_as": "Anonymous authors. Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math. Submitted for review, 2026. Source dataset: Gurnari, Davide and Dlotko, Pawel. dioscuri-tda/knotsBM: 0.3. Zenodo, 2024. DOI: 10.5281/zenodo.10876347.",
   "distribution": [
     {
       "@type": "FileSet",
-      "name": "Raw knotsBM data",
+      "name": "raw_knotsbm_data",
       "description": "Public raw knot polynomial coefficient data used as the source for benchmark construction.",
-      "contentUrl": "https://zenodo.org/records/10876347",
       "encodingFormat": "text/csv",
-      "license": "https://creativecommons.org/licenses/by/4.0/"
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "includes": [
+        "Alexander_upto_17.csv",
+        "Jones_upto_15_MIRRORS.csv",
+        "HomflyPt_upto_15_MIRRORS.csv"
+      ]
     },
     {
       "@type": "FileSet",
-      "name": "Benchmark code repository",
+      "name": "benchmark_code_repository",
       "description": "Code for preprocessing, alignment, split generation, reconstruction model training, scoring, and evaluation.",
-      "contentUrl": "https://github.com/knotinvariant26/knot-rare-event-benchmark",
       "encodingFormat": "application/x-python-code",
-      "license": "https://opensource.org/licenses/MIT"
+      "license": "https://opensource.org/licenses/MIT",
+      "includes": [
+        "scripts/01_prepare_data.py",
+        "scripts/02_train_reconstruction_models.py",
+        "scripts/04_bulk_signature_decoding.py",
+        "scripts/05_tail_enrichment.py",
+        "scripts/06_make_paper_tables.py",
+        "scripts/07_jones_ae_ablation.py",
+        "scripts/08_distribution_diagnostics.py",
+        "scripts/09_confounder_analysis.py",
+        "scripts/10_tail_overlap_jones.py",
+        "scripts/11_make_tail_scatter.py",
+        "scripts/12_outlier_baselines.py"
+      ]
     }
   ],
   "hasPart": [
     {
       "@type": "CreativeWork",
-      "name": "Data preparation and alignment script",
+      "name": "data_preparation_and_alignment_script",
       "description": "Script that aligns Alexander, Jones, and HOMFLY--PT coefficient tables, removes mirror entries, checks signature consistency, creates fixed splits, and stores train-only standardization metadata.",
       "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/01_prepare_data.py"
     },
     {
       "@type": "CreativeWork",
-      "name": "Reconstruction model training script",
+      "name": "reconstruction_model_training_script",
       "description": "Script that trains PCA and autoencoder reconstruction models for Alexander, Jones, and HOMFLY--PT coefficient spaces without using signature labels.",
       "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/02_train_reconstruction_models.py"
     },
     {
       "@type": "CreativeWork",
-      "name": "Bulk signature decoding script",
+      "name": "bulk_signature_decoding_script",
       "description": "Script that evaluates bulk accessibility of knot signature from raw coefficients, PCA embeddings, and autoencoder latents using a post hoc multinomial logistic regression probe.",
       "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/04_bulk_signature_decoding.py"
     },
     {
       "@type": "CreativeWork",
-      "name": "Rare-event tail enrichment script",
+      "name": "rare_event_tail_enrichment_script",
       "description": "Script that evaluates fixed-mass top-k tail enrichment, tail recall, and captured counts for rare large-signature targets.",
       "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/05_tail_enrichment.py"
     },
     {
       "@type": "CreativeWork",
-      "name": "Paper table generation script",
+      "name": "paper_table_generation_script",
       "description": "Script that generates paper tables from benchmark outputs.",
       "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark/blob/main/scripts/06_make_paper_tables.py"
     }
@@ -180,30 +196,10 @@
   "intendedUse": "This benchmark is intended for evaluating unsupervised representation learning methods and reconstruction-based scoring rules under a bulk-versus-tail protocol. It supports evaluation of bulk signature accessibility, fixed-mass rare-event tail enrichment, representation-dependent compressibility failure, and sensitivity to alternative evaluation choices.",
   "limitations": "Polynomial invariants are not complete knot invariants. Rare large-signature events are extremely imbalanced. The benchmark is bounded by the available crossing number range in the underlying public dataset. Tail membership is representation- and score-dependent and should not be interpreted as an intrinsic topological anomaly label.",
   "ethicalConsiderations": "The benchmark consists of mathematical objects and does not contain human subjects, personal data, demographic attributes, behavioral data, or deployed decision-making outcomes. No direct negative societal impacts are anticipated.",
-
-  "rai:dataLimitations": [
-    "This benchmark is limited to polynomial coefficient encodings of prime knots available in the public knotsBM release.",
-    "Polynomial invariants are not complete knot invariants: distinct knots, including mutants, may share identical polynomial coefficient vectors.",
-    "The benchmark is bounded by the crossing number range and polynomial tables available in the source dataset.",
-    "Rare large-signature events are extremely imbalanced, especially for |sigma(K)| >= 12, which is treated only as a qualitative stress test.",
-    "Tail membership is representation- and score-dependent and should not be interpreted as an intrinsic topological anomaly label.",
-    "The dataset is not recommended for claims of universal anomaly detection, complete knot classification, or deployment outside controlled AI for Math evaluation without additional validation."
-  ],
-  "rai:dataBiases": [
-    "The dataset reflects selection and coverage biases inherited from the public knotsBM release and from the finite range of prime knots represented in the underlying knot tables.",
-    "The distribution is highly imbalanced with respect to knot signature: most knots have small signature magnitude, while large-signature knots are rare.",
-    "The dataset is bounded by available crossing numbers, so behavior for substantially larger or more complex knots may not be represented.",
-    "There are no demographic or human population biases because the data consist of mathematical objects rather than human subjects."
-  ],
-  "rai:personalSensitiveInformation": [
-    "The dataset does not contain personal or sensitive information. It consists only of mathematical objects and derived polynomial coefficient encodings of knots.",
-    "It does not contain human subjects data, health or medical data, demographic attributes, geographic identifiers, political or religious information, socio-economic information, language data, age, culture, or other personal information."
-  ],
-  "rai:dataUseCases": [
-    "The benchmark is intended to represent a controlled AI for Math evaluation setting where average-case performance can be separated from rare but meaningful failure regimes.",
-    "Validated use cases include evaluating unsupervised representation learning methods, PCA and autoencoder reconstruction scores, bulk signature accessibility, fixed-mass rare-event tail enrichment, representation-dependent compressibility failure, confounder controls, and out-of-distribution diagnostics by crossing number.",
-    "The benchmark is not validated for complete knot identification, universal anomaly detection, supervised production classification, or claims about all knot invariants beyond the polynomial coefficient encodings studied here."
-  ],
+  "rai:dataLimitations": "This benchmark is limited to polynomial coefficient encodings of prime knots available in the public knotsBM release. Polynomial invariants are not complete knot invariants: distinct knots, including mutants, may share identical polynomial coefficient vectors. The benchmark is bounded by the crossing number range and polynomial tables available in the source dataset. Rare large-signature events are extremely imbalanced, especially for |sigma(K)| >= 12, which is treated only as a qualitative stress test. Tail membership is representation- and score-dependent and should not be interpreted as an intrinsic topological anomaly label. The dataset is not recommended for claims of universal anomaly detection, complete knot classification, or deployment outside controlled AI for Math evaluation without additional validation.",
+  "rai:dataBiases": "The dataset reflects selection and coverage biases inherited from the public knotsBM release and from the finite range of prime knots represented in the underlying knot tables. The distribution is highly imbalanced with respect to knot signature: most knots have small signature magnitude, while large-signature knots are rare. The dataset is bounded by available crossing numbers, so behavior for substantially larger or more complex knots may not be represented. There are no demographic or human population biases because the data consist of mathematical objects rather than human subjects.",
+  "rai:personalSensitiveInformation": "The dataset does not contain personal or sensitive information. It consists only of mathematical objects and derived polynomial coefficient encodings of knots. It does not contain human subjects data, health or medical data, demographic attributes, geographic identifiers, political or religious information, socio-economic information, language data, age, culture, or other personal information.",
+  "rai:dataUseCases": "The benchmark is intended to represent a controlled AI for Math evaluation setting where average-case performance can be separated from rare but meaningful failure regimes. Validated use cases include evaluating unsupervised representation learning methods, PCA and autoencoder reconstruction scores, bulk signature accessibility, fixed-mass rare-event tail enrichment, representation-dependent compressibility failure, confounder controls, and out-of-distribution diagnostics by crossing number. The benchmark is not validated for complete knot identification, universal anomaly detection, supervised production classification, or claims about all knot invariants beyond the polynomial coefficient encodings studied here.",
   "rai:dataSocialImpact": "Positive impact: the benchmark supports more rigorous evaluation of AI and ML systems in structured scientific and mathematical domains, especially where aggregate metrics may hide rare but meaningful regimes. It provides a controlled setting for studying evaluation design, rare-event enrichment, and representation-dependent failure. Risks are limited because the dataset contains mathematical objects and no human subjects or personal data. Possible misuse includes overinterpreting reconstruction tails as intrinsic topological anomaly labels or claiming detector optimality beyond the benchmark. Mitigations include explicit limitations, fixed train/validation/test protocols, public source data, reproducibility scripts, and clear guidance that tail membership is score-dependent.",
   "rai:dataCollectionRawData": "The raw data come from the public knotsBM Zenodo release: https://zenodo.org/records/10876347 and DOI https://doi.org/10.5281/zenodo.10876347.",
   "rai:dataCollectionType": [
@@ -211,17 +207,31 @@
     "Software Collection"
   ],
   "rai:dataCollection": "No new data were collected. The benchmark is derived from the public knotsBM Zenodo release. The present repository provides preprocessing, filtering, alignment, split generation, model training, scoring, and evaluation scripts for a benchmark protocol built from the existing public data.",
-  "rai:dataPreprocessingProtocol": [
-    "Align Alexander, Jones, and HOMFLY--PT coefficient tables by number_of_crossings, is_alternating, and table_number.",
-    "Remove mirror entries marked with !.",
-    "Remove records with inconsistent signature metadata across polynomial files.",
-    "Construct aligned coefficient-vector representations.",
-    "Remove the singleton sigma = 14 class for stratified splitting.",
-    "Create fixed train/validation/test splits shared across polynomial invariants.",
-    "Compute standardization statistics from the training split only.",
-    "Generate evaluation targets Y8, Y10, and Y12 from the held-out knot signature."
-  ],
+  "rai:dataPreprocessingProtocol": "Align Alexander, Jones, and HOMFLY--PT coefficient tables by number_of_crossings, is_alternating, and table_number. Remove mirror entries marked with !. Remove records with inconsistent signature metadata across polynomial files. Construct aligned coefficient-vector representations. Remove the singleton sigma = 14 class for stratified splitting. Create fixed train/validation/test splits shared across polynomial invariants. Compute standardization statistics from the training split only. Generate evaluation targets Y8, Y10, and Y12 from the held-out knot signature.",
   "rai:dataManipulationProtocol": "The benchmark applies deterministic preprocessing and filtering to the public raw knotsBM files. No human annotation, crowdsourcing, synthetic generation, or personal data processing is involved.",
   "rai:dataCollectionMissingData": "No missing personal or demographic data exist because the benchmark consists of mathematical objects. Records with inconsistent signature metadata across polynomial files are removed during preprocessing.",
-  "rai:dataReleaseMaintenance": "The benchmark is released as an anonymous review repository for NeurIPS submission. Processed benchmark arrays are not redistributed by default and can be regenerated from the public source data. Versioning and author-identifying metadata should be updated in the camera-ready version if accepted."
+  "rai:dataReleaseMaintenance": "The benchmark is released as an anonymous review repository for NeurIPS submission. Processed benchmark arrays are not redistributed by default and can be regenerated from the public source data. Versioning and author-identifying metadata should be updated in the camera-ready version if accepted.",
+  "rai:hasSyntheticData": false,
+  "prov:wasDerivedFrom": [
+    {
+      "@id": "https://zenodo.org/records/10876347",
+      "prov:label": "dioscuri-tda/knotsBM: 0.3",
+      "sc:license": "Creative Commons Attribution 4.0 International",
+      "prov:wasAttributedTo": {
+        "@id": "https://zenodo.org",
+        "prov:label": "Zenodo"
+      }
+    }
+  ],
+  "prov:wasGeneratedBy": [
+    {
+      "@type": "prov:Activity",
+      "prov:type": {
+        "@id": "https://www.wikidata.org/wiki/Q5227332"
+      },
+      "prov:label": "Benchmark construction from public knotsBM data",
+      "sc:description": "The benchmark is derived from the public knotsBM Zenodo release. No new data were collected and no human annotation, crowdsourcing, synthetic generation, or personal data processing was performed. The preprocessing pipeline aligns Alexander, Jones, and HOMFLY--PT coefficient tables by number_of_crossings, is_alternating, and table_number; removes mirror entries marked with \"!\"; removes records with inconsistent signature metadata across polynomial files; constructs aligned coefficient-vector representations; removes the singleton sigma = 14 class for stratified splitting; creates fixed train/validation/test splits shared across polynomial invariants; computes standardization statistics using the training split only; and generates the rare-event evaluation targets Y8, Y10, and Y12 from the held-out knot signature.",
+      "prov:atTime": "2026-05-04T10:52:00Z"
+    }
+  ]
 }
