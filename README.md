@@ -43,9 +43,9 @@ knot-rare-event-benchmark/
     ├── figures/
     ├── scores/
     └── splits/
+```
 
-
-**Data
+Data
 
 The raw knot polynomial data are obtained from the public Zenodo release:
 
