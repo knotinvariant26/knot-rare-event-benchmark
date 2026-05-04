@@ -9,7 +9,10 @@
   "alternateName": "Knot Polynomial Spaces Rare-Event Benchmark",
   "description": "A reproducible benchmark for rare-event evaluation in AI for Math using aligned coefficient encodings of the Alexander, Jones, and HOMFLY--PT polynomials for prime knots. The benchmark evaluates bulk accessibility and fixed-mass tail enrichment using the knot signature as a held-out external evaluation probe. The repository provides preprocessing, alignment, split generation, model training, scoring, and evaluation scripts. Processed benchmark arrays and result artifacts are not redistributed in the repository; they can be regenerated from the public raw knotsBM Zenodo release.",
   "url": "https://github.com/knotinvariant26/knot-rare-event-benchmark",
-  "license": "https://opensource.org/licenses/MIT",
+  "license": [
+  "https://opensource.org/licenses/MIT",
+  "https://creativecommons.org/licenses/by/4.0/"
+],
   "creator": {
     "@type": "Organization",
     "name": "Anonymous authors"
@@ -128,10 +131,10 @@
       "description": "Fixed-dimensional coefficient vector encoding of the Jones polynomial. Dimension: 51."
     },
     {
-      "@type": "PropertyValue",
-      "name": "homflypt_coefficients",
-      "description": "Fixed-dimensional coefficient vector encoding of the HOMFLY--PT polynomial. Dimension: 152."
-    },
+  "@type": "PropertyValue",
+  "name": "homfly_pt_coefficients",
+  "description": "Fixed-dimensional coefficient vector encoding of the HOMFLY--PT polynomial. Dimension: 152."
+    } ,
     {
       "@type": "PropertyValue",
       "name": "split",
