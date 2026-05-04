@@ -104,6 +104,14 @@ Tested with Python 3.10+.
 
 The main paper results are generated in stages.
 
+## Optional notebook workflow
+
+In addition to the script-based pipeline, we provide an interactive notebook:
+
+```text
+notebooks/main_reproduction.ipynb
+```
+
 ### 1. Prepare aligned data and fixed splits
 
 ```bash
