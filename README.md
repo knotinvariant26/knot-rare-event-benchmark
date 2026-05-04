@@ -18,8 +18,12 @@ The goal is not to introduce a new representation learning architecture. Instead
 ```text
 knot-rare-event-benchmark/
 ├── README.md
+├── LICENSE
+├── croissant_metadata.json
 ├── requirements.txt
 ├── environment.yml
+├── notebooks/
+│   └── main_reproduction.ipynb
 ├── scripts/
 │   ├── 01_prepare_data.py
 │   ├── 02_train_reconstruction_models.py
@@ -44,6 +48,9 @@ knot-rare-event-benchmark/
     ├── scores/
     └── splits/
 ```
+
+---
+
 ## Data
 
 The raw knot polynomial data are obtained from the public Zenodo release:
@@ -52,7 +59,7 @@ The raw knot polynomial data are obtained from the public Zenodo release:
 
 The Zenodo release is licensed under **Creative Commons Attribution 4.0 International**.
 
-This repository provides preprocessing, alignment, split generation, training, and evaluation scripts for the benchmark protocol. Where redistribution of processed files is permitted, processed benchmark assets may be included; otherwise, they can be regenerated from the public raw data.
+This repository provides preprocessing, alignment, split generation, training, and evaluation scripts for the benchmark protocol. Processed benchmark arrays and result artifacts are not redistributed in this repository by default. They can be regenerated from the public raw data using the scripts in this repository.
 
 Expected raw files:
 
@@ -62,35 +69,47 @@ Jones_upto_15_MIRRORS.csv
 HomflyPt_upto_15_MIRRORS.csv
 ```
 
+---
+
 ## Benchmark construction
 
 The preprocessing pipeline aligns Alexander, Jones, and HOMFLY--PT coefficient tables by:
+
 ```text
 (number_of_crossings, is_alternating, table_number)
 ```
-after removing mirror entries marked with !.
+
+after removing mirror entries marked with `!`.
 
 The final aligned benchmark contains:
 
+```text
 307,110 aligned prime-knot records
 Alexander dimension: 17
 Jones dimension: 51
 HOMFLY--PT dimension: 152
 ```
-For stratified train/validation/test splitting, the singleton class sigma = 14 is removed, yielding:
 
+For stratified train/validation/test splitting, the singleton class `sigma = 14` is removed, yielding:
+
+```text
 307,109 records used for the fixed split protocol
 ```
+
 The split indices are shared across all polynomial invariants.
 
+---
+
 ## Installation
-## Option 1: Conda
+
+### Option 1: Conda
 
 ```bash
 conda env create -f environment.yml
 conda activate knot-benchmark
 ```
-## Option 2: pip
+
+### Option 2: pip
 
 ```bash
 python -m venv .venv
@@ -100,11 +119,13 @@ pip install -r requirements.txt
 
 Tested with Python 3.10+.
 
+---
+
 ## Reproducing the main results
 
 The main paper results are generated in stages.
 
-## Optional notebook workflow
+### Optional notebook workflow
 
 In addition to the script-based pipeline, we provide an interactive notebook:
 
@@ -127,12 +148,14 @@ results/tables/preprocessing_summary.csv
 
 This step performs alignment, mirror filtering, signature consistency checks, train/validation/test split generation, and train-only standardization metadata.
 
-## 2. Train reconstruction models and compute scores
+### 2. Train reconstruction models and compute scores
+
 ```bash
 python scripts/02_train_reconstruction_models.py
 ```
 
 Expected outputs:
+
 ```text
 results/scores/
 results/models/
@@ -140,7 +163,8 @@ results/models/
 
 This step trains PCA and autoencoder reconstruction models for Alexander, Jones, and HOMFLY--PT. Autoencoders are trained without signature labels.
 
-## 3. Bulk signature decoding
+### 3. Bulk signature decoding
+
 ```bash
 python scripts/04_bulk_signature_decoding.py
 ```
@@ -155,77 +179,106 @@ This reproduces the bulk accessibility results reported in Table 1 of the paper.
 
 The knot signature is used only for this post hoc probe and is not used to train PCA or autoencoders.
 
-## 4. Rare-event tail enrichment
+### 4. Rare-event tail enrichment
+
 ```bash
 python scripts/05_tail_enrichment.py
 ```
 
 Expected outputs:
+
 ```text
 results/tables/tail_enrichment_main.csv
 results/tables/jones_Y12_stress.csv
 ```
+
 This reproduces the fixed-mass top-k rare-event enrichment results.
 
-For a test set of size ```text n ``` and tail level ```text tau ```, the tail size is:
+For a test set of size `n` and tail level `tau`, the tail size is:
+
 ```text
 k = ceil((1 - tau) * n)
 ```
+
 For the held-out test set used in the paper:
+
 ```text
 tau = 0.95 -> k = 1536
 tau = 0.99 -> k = 308
 ```
+
 Rare-event targets are:
+
 ```text
 Y8  = 1[|sigma(K)| >= 8]
 Y10 = 1[|sigma(K)| >= 10]
 Y12 = 1[|sigma(K)| >= 12]  # qualitative stress test only
 ```
 
-## 5. Generate paper tables
+### 5. Generate paper tables
+
 ```bash
 python scripts/06_make_paper_tables.py
 ```
+
 Expected outputs:
+
 ```text
 results/tables/table1_bulk_decoding.tex
 results/tables/table2_jones_tail_enrichment.tex
 results/tables/table_y12_stress.tex
 ```
+
+---
+
 ## Additional analyses
 
 The following scripts reproduce appendix diagnostics and contextual comparisons.
 
 ### Jones autoencoder ablations
+
 ```bash
 python scripts/07_jones_ae_ablation.py
 ```
+
 Outputs:
+
 ```text
 results/tables/jones_ae_ablation_stability.csv
 ```
+
 This varies latent dimension, random seed, and score type:
+
 ```text
 latent dimension: 8, 16, 32
 random seeds: 42, 123, 999
 score type: NRE, SSE
-Distributional diagnostics
+```
+
+### Distributional diagnostics
+
+```bash
 python scripts/08_distribution_diagnostics.py
 ```
+
 Outputs:
+
 ```text
 results/tables/powerlaw_master_results.csv
 results/figures/ccdf_all_invariants.png
 results/figures/ccdf_all_invariants.pdf
 ```
+
 These diagnostics are descriptive only. The paper does not claim exact power-law behavior.
 
 ### Confounder analysis
+
 ```bash
 python scripts/09_confounder_analysis.py
 ```
+
 Outputs:
+
 ```text
 results/tables/confounder_spearman.csv
 results/tables/confounder_models_jones.csv
@@ -234,45 +287,60 @@ results/tables/confounder_models_jones.csv
 This evaluates whether coefficient-level statistics such as norm, sparsity proxy, support width, and crossing number explain rare-event enrichment.
 
 ### Tail-overlap analysis
+
 ```bash
 python scripts/10_tail_overlap_jones.py
 ```
+
 Outputs:
+
 ```text
 results/tables/tail_overlap_jones.csv
 results/tables/ae_only_positive_examples.csv
 ```
+
 This compares the fixed-mass AE reconstruction tail with the tail induced by a supervised confounder-only model.
 
 ### Tail scatter figure
+
 ```bash
 python scripts/11_make_tail_scatter.py
 ```
+
 Outputs:
+
 ```text
 results/figures/jones_tail_scatter_full.png
 results/figures/jones_tail_scatter_full.pdf
 results/figures/jones_tail_scatter_tail_zoom.png
 results/figures/jones_tail_scatter_tail_zoom.pdf
 ```
-This generates the main scatter visualization for Jones AE-NRE against |sigma(K)|, colored by PCA-NRE.
+
+This generates the main scatter visualization for Jones AE-NRE against `|sigma(K)|`, colored by PCA-NRE.
 
 ### Contextual ambient outlier baselines
+
 ```bash
 python scripts/12_outlier_baselines.py
 ```
+
 Outputs:
+
 ```text
 results/tables/outlier_baselines_test.csv
 results/tables/outlier_baselines_test_table.tex
 ```
+
 These baselines include Isolation Forest, Local Outlier Factor, One-Class SVM with RBF kernel, and RFF + PCA residual. They are included as contextual comparisons only and are not used as the main basis for the reconstruction-based claims.
 
-### Fixed-mass top-k tail convention
+---
+
+## Fixed-mass top-k tail convention
 
 All enrichment and captured-count results use exact fixed-mass top-k tails.
 
-Given scores s, test-set size n, and tail level tau:
+Given scores `s`, test-set size `n`, and tail level `tau`:
+
 ```python
 k = ceil((1 - tau) * n)
 tail = top k samples ranked by score
@@ -281,14 +349,18 @@ tail = top k samples ranked by score
 Ties are broken deterministically by stable sorting. This ensures that all methods are compared using identical tail sizes.
 
 For the paper test split:
+
 ```text
 N_test = 30,711
 tau = 0.95 -> tail size = 1,536
 tau = 0.99 -> tail size = 308
 ```
-### Main expected results
 
-Approximate values from the paper:
+---
+
+## Main expected results
+
+Approximate values from the paper are reported below. Small numerical differences may occur across software versions, but the fixed split and stored score files should reproduce the reported tables.
 
 ### Bulk signature accessibility
 
@@ -305,13 +377,14 @@ Approximate values from the paper:
 | PCA-NRE | 3.49x | 9.50x | 9.5% | 6/308 |
 | AE-NRE | 4.13x | 7.91x | 7.9% | 5/308 |
 
-Small numerical differences may occur across software versions, but the fixed split and stored score files should reproduce the reported tables.
+---
 
 ## Compute requirements
 
 The benchmark is designed to be reproducible on a standard research workstation or cloud notebook.
 
 ### Recommended hardware
+
 - CPU: 4+ cores recommended.
 - RAM: 16 GB minimum; 32 GB recommended for the full HOMFLY--PT and outlier-baseline experiments.
 - GPU: optional but recommended for autoencoder training. A single NVIDIA T4, A10, V100, or similar GPU is sufficient.
@@ -337,22 +410,17 @@ Runtimes vary by hardware.
 
 The main benchmark results in Tables 1--2 can be reproduced without running the contextual outlier baselines.
 
+---
+
 ## Reproducibility notes
+
 - All standardization is fit on the training split only.
 - Signature labels are never used to train PCA, autoencoders, reconstruction scores, or tail membership.
 - The same train/validation/test split indices are used across Alexander, Jones, and HOMFLY--PT.
 - Tail metrics use exact fixed-mass top-k tails, not threshold-based quantile inclusion.
 - The extreme target Y12 is reported only as a qualitative stress test because it has only two positives in the held-out test split.
 
-## License
-
-The code in this repository is released under the license specified in LICENSE.
-
-The raw knot polynomial data are obtained from the public knotsBM Zenodo release and are governed by the original dataset license:
-```text
-Creative Commons Attribution 4.0 International
-```
-Please cite the original dataset release when using the raw or processed knot polynomial data.
+---
 
 ## Croissant metadata
 
@@ -362,18 +430,47 @@ This benchmark includes a Croissant metadata file:
 croissant_metadata.json
 ```
 
-### Citation
+The file describes the benchmark artifact, including the raw data source, license, preprocessing pipeline, aligned records, feature tables, split protocol, evaluation targets, intended use, limitations, and Responsible AI metadata.
+
+The raw knot polynomial data come from the public knotsBM Zenodo release:
+
+```text
+https://zenodo.org/records/10876347
+```
+
+Processed benchmark arrays and result artifacts are not redistributed in this repository by default. They can be regenerated from the public raw data using the scripts in this repository.
+
+---
+
+## License
+
+The code in this repository is released under the MIT License specified in `LICENSE`.
+
+The raw knot polynomial data are obtained from the public knotsBM Zenodo release and are governed by the original dataset license:
+
+```text
+Creative Commons Attribution 4.0 International
+```
+
+Please cite the original dataset release when using the raw or processed knot polynomial data.
+
+---
+
+## Citation
 
 Anonymous citation placeholder for review:
+
 ```bibtex
 @misc{knot_rare_event_benchmark_2026,
-  title = {Knot Polynomial Spaces as a Benchmark for Rare-Event Evaluation in AI for Math},
+  title = {Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math},
   author = {Anonymous},
   year = {2026},
   note = {Submitted for review}
 }
 ```
+
 Dataset citation:
+
 ```bibtex
 @dataset{gurnari_dlotko_2024_knotsbm,
   author = {Gurnari, Davide and D{\l}otko, Pawe{\l}},
@@ -384,7 +481,8 @@ Dataset citation:
 }
 ```
 
+---
+
 ## Anonymity note
 
 This repository is prepared for anonymous peer review. It avoids author-identifying information and uses neutral project naming.
-
