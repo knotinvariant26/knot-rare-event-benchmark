@@ -1,8 +1,8 @@
-# Knot Polynomial Spaces as a Benchmark for Rare-Event Evaluation in AI for Math
+# Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math
 
 This repository contains code and reproducibility assets for the paper:
 
-**Knot Polynomial Spaces as a Benchmark for Rare-Event Evaluation in AI for Math**
+**Knot Polynomial Spaces: A Benchmark for Rare-Event Evaluation in AI for Math**
 
 The benchmark studies rare-event evaluation in polynomial coefficient spaces for prime knots. We use coefficient-vector encodings of the Alexander, Jones, and HOMFLY--PT polynomials and evaluate unsupervised reconstruction-based scores against the knot signature, which is held out as an external probe.
 
