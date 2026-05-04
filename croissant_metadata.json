@@ -2,9 +2,12 @@
   "@context": {
     "@language": "en",
     "@vocab": "https://schema.org/",
-    "cr": "http://mlcommons.org/croissant/"
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/"
   },
   "@type": "Dataset",
+  "dct:conformsTo": "http://mlcommons.org/croissant/RAI/1.0",
   "name": "Knot Polynomial Spaces Rare Event Benchmark for AI for Math",
   "alternateName": "Knot Polynomial Spaces Rare-Event Benchmark",
   "description": "A reproducible benchmark for rare-event evaluation in AI for Math using aligned coefficient encodings of the Alexander, Jones, and HOMFLY--PT polynomials for prime knots. The benchmark evaluates bulk accessibility and fixed-mass tail enrichment using the knot signature as a held-out external evaluation probe. The repository provides preprocessing, alignment, split generation, model training, scoring, and evaluation scripts. Processed benchmark arrays and result artifacts are not redistributed in the repository; they can be regenerated from the public raw knotsBM Zenodo release.",
@@ -177,27 +180,48 @@
   "intendedUse": "This benchmark is intended for evaluating unsupervised representation learning methods and reconstruction-based scoring rules under a bulk-versus-tail protocol. It supports evaluation of bulk signature accessibility, fixed-mass rare-event tail enrichment, representation-dependent compressibility failure, and sensitivity to alternative evaluation choices.",
   "limitations": "Polynomial invariants are not complete knot invariants. Rare large-signature events are extremely imbalanced. The benchmark is bounded by the available crossing number range in the underlying public dataset. Tail membership is representation- and score-dependent and should not be interpreted as an intrinsic topological anomaly label.",
   "ethicalConsiderations": "The benchmark consists of mathematical objects and does not contain human subjects, personal data, demographic attributes, behavioral data, or deployed decision-making outcomes. No direct negative societal impacts are anticipated.",
-  "responsibleAI": {
-    "dataType": "Mathematical data",
-    "containsPersonalData": false,
-    "containsHumanSubjectsData": false,
-    "containsSensitiveAttributes": false,
-    "intendedUsers": [
-      "Machine learning researchers",
-      "AI for Math researchers",
-      "Benchmark and evaluation researchers",
-      "Computational topology researchers"
-    ],
-    "outOfScopeUses": [
-      "Treating reconstruction tails as intrinsic topological anomaly labels",
-      "Using the benchmark to claim universal detector optimality",
-      "Using Y12 as a statistically stable quantitative target"
-    ],
-    "knownLimitations": [
-      "Polynomial coefficient vectors are incomplete representations of knots",
-      "Rare-event targets are highly imbalanced",
-      "Crossing number range is bounded by the source dataset",
-      "Processed assets must be regenerated from the public source data unless separately distributed"
-    ]
-  }
+
+  "rai:dataLimitations": [
+    "This benchmark is limited to polynomial coefficient encodings of prime knots available in the public knotsBM release.",
+    "Polynomial invariants are not complete knot invariants: distinct knots, including mutants, may share identical polynomial coefficient vectors.",
+    "The benchmark is bounded by the crossing number range and polynomial tables available in the source dataset.",
+    "Rare large-signature events are extremely imbalanced, especially for |sigma(K)| >= 12, which is treated only as a qualitative stress test.",
+    "Tail membership is representation- and score-dependent and should not be interpreted as an intrinsic topological anomaly label.",
+    "The dataset is not recommended for claims of universal anomaly detection, complete knot classification, or deployment outside controlled AI for Math evaluation without additional validation."
+  ],
+  "rai:dataBiases": [
+    "The dataset reflects selection and coverage biases inherited from the public knotsBM release and from the finite range of prime knots represented in the underlying knot tables.",
+    "The distribution is highly imbalanced with respect to knot signature: most knots have small signature magnitude, while large-signature knots are rare.",
+    "The dataset is bounded by available crossing numbers, so behavior for substantially larger or more complex knots may not be represented.",
+    "There are no demographic or human population biases because the data consist of mathematical objects rather than human subjects."
+  ],
+  "rai:personalSensitiveInformation": [
+    "The dataset does not contain personal or sensitive information. It consists only of mathematical objects and derived polynomial coefficient encodings of knots.",
+    "It does not contain human subjects data, health or medical data, demographic attributes, geographic identifiers, political or religious information, socio-economic information, language data, age, culture, or other personal information."
+  ],
+  "rai:dataUseCases": [
+    "The benchmark is intended to represent a controlled AI for Math evaluation setting where average-case performance can be separated from rare but meaningful failure regimes.",
+    "Validated use cases include evaluating unsupervised representation learning methods, PCA and autoencoder reconstruction scores, bulk signature accessibility, fixed-mass rare-event tail enrichment, representation-dependent compressibility failure, confounder controls, and out-of-distribution diagnostics by crossing number.",
+    "The benchmark is not validated for complete knot identification, universal anomaly detection, supervised production classification, or claims about all knot invariants beyond the polynomial coefficient encodings studied here."
+  ],
+  "rai:dataSocialImpact": "Positive impact: the benchmark supports more rigorous evaluation of AI and ML systems in structured scientific and mathematical domains, especially where aggregate metrics may hide rare but meaningful regimes. It provides a controlled setting for studying evaluation design, rare-event enrichment, and representation-dependent failure. Risks are limited because the dataset contains mathematical objects and no human subjects or personal data. Possible misuse includes overinterpreting reconstruction tails as intrinsic topological anomaly labels or claiming detector optimality beyond the benchmark. Mitigations include explicit limitations, fixed train/validation/test protocols, public source data, reproducibility scripts, and clear guidance that tail membership is score-dependent.",
+  "rai:dataCollectionRawData": "The raw data come from the public knotsBM Zenodo release: https://zenodo.org/records/10876347 and DOI https://doi.org/10.5281/zenodo.10876347.",
+  "rai:dataCollectionType": [
+    "Secondary Data Analysis",
+    "Software Collection"
+  ],
+  "rai:dataCollection": "No new data were collected. The benchmark is derived from the public knotsBM Zenodo release. The present repository provides preprocessing, filtering, alignment, split generation, model training, scoring, and evaluation scripts for a benchmark protocol built from the existing public data.",
+  "rai:dataPreprocessingProtocol": [
+    "Align Alexander, Jones, and HOMFLY--PT coefficient tables by number_of_crossings, is_alternating, and table_number.",
+    "Remove mirror entries marked with !.",
+    "Remove records with inconsistent signature metadata across polynomial files.",
+    "Construct aligned coefficient-vector representations.",
+    "Remove the singleton sigma = 14 class for stratified splitting.",
+    "Create fixed train/validation/test splits shared across polynomial invariants.",
+    "Compute standardization statistics from the training split only.",
+    "Generate evaluation targets Y8, Y10, and Y12 from the held-out knot signature."
+  ],
+  "rai:dataManipulationProtocol": "The benchmark applies deterministic preprocessing and filtering to the public raw knotsBM files. No human annotation, crowdsourcing, synthetic generation, or personal data processing is involved.",
+  "rai:dataCollectionMissingData": "No missing personal or demographic data exist because the benchmark consists of mathematical objects. Records with inconsistent signature metadata across polynomial files are removed during preprocessing.",
+  "rai:dataReleaseMaintenance": "The benchmark is released as an anonymous review repository for NeurIPS submission. Processed benchmark arrays are not redistributed by default and can be regenerated from the public source data. Versioning and author-identifying metadata should be updated in the camera-ready version if accepted."
 }
